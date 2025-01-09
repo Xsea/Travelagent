@@ -1,21 +1,20 @@
 calculate_hotel_cost_tool = {
     "type": "function",
     "function": {
-        "name": "calculate_hotel_cost",
-        "description": "Given a start and end date, I will be able to calculate how much the stay at the hotel costs",
+        # add name and description. Remember, the LLM reads this info and uses this information to determine when and how to use it
+        "name": "name",
+        "description": "description",
         "parameters": {
             "type": "object",
             "properties": {
-                "start_date": {
-                    "type": "string",
-                    "description": """The day the person arrives for their hotel stay. Given in format yyyy-mm-dd""",
-                },
-                "end_date": {
-                    "type": "string",
-                    "description": """The day the person leaves the hotel. Given in format yyyy-mm-dd""",
-                },
+                # properties have the format:
+                # "name": {
+                #    "type": "string, number, boolean....",
+                #    "description": the description of this parameter, so the LLM knows what it is for, and how to get it from the user request,
+                #},
             },
-            "required": ["start_date", "end_date"],
+            # required takes the name of the parameters
+            "required": [],
             "additionalProperties": False,
         }
     }
