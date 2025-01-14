@@ -9,6 +9,9 @@ Brochure:
 Using this outline, please write a tourist brochure, describing the wonders and reasons to visit Luna for your vacation.
 Invent Cities, architectural sights and tourist attractions that invite people to come to Luna
 
-Hostel
+Hotel:
 Now please describe a low cost hostel, mainly targeted at young adults, in city. Write in the style of
 common hostel advertisement, just with the exception, that it is centered in city
+
+Blog:
+Now please write an article from a travel blogger, who visited cities on Luna for a sight seeing tour and describes his travel
