@@ -43,22 +43,15 @@ while True:
                 model="gpt-4o-mini",
                 messages= messages
             )
-        elif tool_call.function.name == "answer_space_travel_questions":
-            # get closest texts
-            texts = answer_space_travel(arguments["user_request"])
-            # if you want, make copy of messages to save some money (texts will not always be in the context)
-            # however, maybe the chat flow will be better if it stays, you decide
-            space_message = messages.copy()
-            # add all texts to the chat history (or the copy of it)
-            for text in texts:
-                space_message.append(
-                    {"role": "system",
-                     "content": text})
-            # generate new completion request
-            completionRequest = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=space_message
-                )
+        # add a new tool to the descriptions, that describes a tool that is able to get information about space locations
+        # add this tool here with an if condition and call a method that does the following:
+        # 1. vectorizes the user_request (submethod is available in hints folder)
+        # 2. gets the closest texts for the user request (submethod is available in hints folder)
+        # 3. adds the texts to the chat history. Here you can decide, if you want to make a
+        # temporary copy and fill it with the texts. This will save you costs,
+        # as not always the full texts are part of the context, but may make the results worse (try out if you want)
+        # create a new completion request and give the result to the user (and also save it in messages)
+
 
     llm_answer = completionRequest.choices[0].message
     messages.append(llm_answer)
