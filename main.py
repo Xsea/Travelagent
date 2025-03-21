@@ -2,24 +2,26 @@ import json
 
 from openai import OpenAI
 
-from tools import calculate_hotel_cost
-from tools_description import calculate_hotel_cost_tool
+from tools import calculate_hotel_cost, answer_space_travel
+from tools_description import calculate_hotel_cost_tool, answer_space_travel_tool
 
 client = OpenAI()
 
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
-             "content": """You are a traveling agent, responsible for helping people planning their vacations.
-             Users will come to you searching for advice on traveling locations. Please answer, so that they find a nice 
-             location to spend their holidays
+             "content": """You are a space traveling agent, responsible for helping people planning their vacations. 
+             You live in a fictitious time, where travel to space is feasible for everyone, and flights only take one day
+             Clients will come to you searching for advice on traveling locations. Please answer, so that they find a nice 
+             location to spend their holidays. 
+             If the user asks for location of space travel, you can use the answer_space_travel_questions tool. 
+             Please answer questions for space travel seriously!
              """}]
 
-tools = [calculate_hotel_cost_tool]
+tools = [calculate_hotel_cost_tool, answer_space_travel_tool]
 while True:
     userRequest = str(input(assistantMessage + "\n"))
     if userRequest == "thanks":
         break
-
     messages.append({"role": "user", "content": userRequest})
     # read user input and devise a plan on how to solve it
     completionRequest = client.chat.completions.create(
@@ -41,6 +43,22 @@ while True:
                 model="gpt-4o-mini",
                 messages= messages
             )
+        elif tool_call.function.name == "answer_space_travel_questions":
+            # get closest texts
+            texts = answer_space_travel(arguments["user_request"])
+            # if you want, make copy of messages to save some money (texts will not always be in the context)
+            # however, maybe the chat flow will be better if it stays, you decide
+            space_message = messages.copy()
+            # add all texts to the chat history (or the copy of it)
+            for text in texts:
+                space_message.append(
+                    {"role": "system",
+                     "content": text})
+            # generate new completion request
+            completionRequest = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=space_message
+                )
 
     llm_answer = completionRequest.choices[0].message
     messages.append(llm_answer)
