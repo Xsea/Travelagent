@@ -3,6 +3,8 @@
 ## Getting started
 This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script
 that will make use of vectorization, a database call to a dockerized db, and an llm inference. If everything works, you are ready for the workshop!
+0. check out this git repository.
+
 The first thing we ask of you, is to create an OpenAI API account, as our material uses it for LLM inference.
 (Skip step 1+2 if you already have an account and an exported API Key)
 1. If you do not have an OpenAI API Account, please create one. It should start you with a 5$ starting budget, 
