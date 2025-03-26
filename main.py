@@ -27,6 +27,14 @@ def planning(user_request, chat_history):
                  You do not solve tasks yourself, but only determine the step by step plan given your accessible tools.
                  You also have access to the chat history that was provided until now, check there if the necessary 
                  information is already available and which you still need to collect.
+                Include all steps necessary to finish the task in your plan. Before writing down the plan however, 
+                start by explaining your thoughts. A few notes for your planning: 
+                1. When asked to book a hotel, you do not need to calculate the cost, as the booking function will do it
+                2. Assume that the flight outbound and return dates are the same as the check in and check out dates for the hotel
+                3. Search through the chat history to determine location, hotels or dates that have already been mentioned by the user
+                4. Always give the full plan! You might first need just one information, but you can anticapte more steps. 
+                This means, give all the steps needed to gather all the information and do all necessary action!
+                
                  Give your answer in the following format (while filling out the {} with your own input:
 
                  STEP X:
@@ -34,11 +42,6 @@ def planning(user_request, chat_history):
                  Recommended Tool: {Your Tool Recommendation}
                  Suggested Input: {Using the input parameters of the tool, determine the suggested input. If the input is
                   dependent on the output of a previous step, write Output of Step Y}
-                  
-                Include all steps necessary to finish the task in your plan. Before writing down the plan however, 
-                start by explaining your thoughts. A few notes for your planning: 
-                1. When asked to book a hotel, you do not need to calculate the cost, as the booking function will do it
-                2. Assume that the flight outbound and return dates are the same as the check in and check out dates for the hotel
                  """},
 
             {"role": "user", "content": user_request },
@@ -55,9 +58,29 @@ def memory(tool_name, arguments, output, step):
         executed_step += "\n We used tool calculate_hotel_cost to determine the costs with following arguments:"
         executed_step += f"\n ARGUMENTS: start_date: {arguments['start_date']} and end_date: {arguments['end_date']}"
         executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
-    elif tool_name == "test_writer":
+    elif tool_name == "give_tourist_information_space":
         executed_step += "\n We used tool give_tourist_information_space to find tourist information:"
         executed_step += "\n ARGUMENTS: " + arguments["user_request"]
+        executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
+    elif tool_name == "list_hotels":
+        executed_step += "\n We used tool list_hotels to get a list of all hotels:"
+        executed_step += "\n ARGUMENTS: " + arguments["location"]
+        executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
+    elif tool_name == "give_hotel_information":
+        executed_step += "\n We used tool give_hotel_information to get information for a specific hotel:"
+        executed_step += "\n ARGUMENTS: " + arguments["hotel_name"]
+        executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
+    elif tool_name == "collect_information_from_the_user":
+        executed_step += "\n We used tool collect_information_from_the_user to gain additional information from the user:"
+        executed_step += "\n ARGUMENTS: " + arguments["question"]
+        executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
+    elif tool_name == "book_hotel":
+        executed_step += "\n We used tool book_hotel to book a hotel:"
+        executed_step += f"\n ARGUMENTS: hotel_name: {arguments['hotel_name']}, check_in: {arguments['check_in']}, check_out: {arguments['check_out']}"
+        executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
+    elif tool_name == "book_flights":
+        executed_step += "\n We used tool book_flights to book flights:"
+        executed_step += f"\n ARGUMENTS: arrival_port: {arguments['arrival_port']}, outbound_date: {arguments['outbound_date']}, return_date: {arguments['return_date']}"
         executed_step += "\n OUTPUT OF STEP" + str(step) + "\n" + output + "\n END OUTPUT"
     return executed_step
 
@@ -68,7 +91,7 @@ messages = [{"role": "system",
              You live in a fictitious time, where travel to space is feasible for everyone, and flights only take one day
              Clients will come to you searching for advice on traveling locations. Please answer, so that they find a nice 
              location to spend their holidays. 
-             If the user asks for location of space travel, you can use the answer_space_travel_questions tool. 
+             If the user asks for location of space travel, you can use the give_tourist_information_space tool. 
              Please answer questions for space travel seriously!
              
              """}]
@@ -80,12 +103,12 @@ def flatten_history(messages_array):
     return history
 
 while True:
-    userRequest = str(input(assistantMessage + "\n"))
-    if userRequest == "thanks":
+    user_request = str(input(assistantMessage + "\n"))
+    if user_request == "thanks":
         break
-    messages.append({"role": "user", "content": userRequest})
+    messages.append({"role": "user", "content": user_request})
     # read user input and devise a plan on how to solve it
-    the_plan = planning(userRequest, flatten_history(messages))
+    the_plan = planning(user_request, flatten_history(messages))
     print(the_plan)
     i = 0
     executed_steps = "########## EXECUTED STEPS ############"
@@ -106,8 +129,10 @@ while True:
                     This output might be needed to execute further steps later on
                     If this list is empty, no steps have been executed until now.
                     Compare the plan and the executed list with each other to determine the next step that needs to be executed. 
-                    Remember, that you have not parallel tool use capability.
+                    Do only execute steps, that have been mentioned in the plan! Do not add more steps than suggested.
                     Please output your suggestion for a next step in the following valid JSON format with the following way 
+                    No multi tool use parallel! Always only give one tool recommendation
+                    You also get access to the chat history below.
                     (Read the Text between $$ as explanations of the parameter):
                     {
                        "chainOfThoughts": $Your chain of thoughts while solving this tasks. Fill it with your reasoning$
@@ -125,6 +150,10 @@ while True:
                 {
                     "role": "system",
                     "content": executed_steps
+                    },
+                {
+                    "role": "system",
+                    "content": flatten_history(messages)
                     }
                 ]
             )
@@ -155,43 +184,46 @@ while True:
                 ]
             )
 
-        # save what we have done - this is our short term memory.
-        # The LLM will use this to determine what has been done and what needs to be done next
+        if completion_tool.choices[0].finish_reason == "tool_calls":
+            tool_call = completion_tool.choices[0].message.tool_calls[0]
+            arguments = json.loads(tool_call.function.arguments)
+            output = ""
+            try:
+                if tool_call.function.name == "calculate_hotel_cost":
+                    output = calculate_hotel_cost(arguments["start_date"], arguments["end_date"])
+                elif tool_call.function.name == "give_tourist_information_space":
+                    output = give_tourist_information_space(arguments["user_request"])
+                elif tool_call.function.name == "list_hotels":
+                    output = list_hotels(arguments["location"])
+                elif tool_call.function.name == "give_hotel_information":
+                    output = give_hotel_information(arguments["hotel_name"])
+                elif tool_call.function.name == "collect_information_from_the_user":
+                    output = collect_information_from_the_user(arguments["question"])
+                elif tool_call.function.name == "book_hotel":
+                    output = book_hotel(arguments["hotel_name"], arguments["check_in"], arguments["check_out"])
+                elif tool_call.function.name == "book_flights":
+                    output = book_flights(arguments["arrival_port"], arguments["outbound_date"], arguments["return_date"])
+                this_step = memory(tool_call.function.name, arguments, output, i)
+                print(this_step)
+                executed_steps += this_step
+            except Exception as error:
+                this_step = f"error while calling {tool_call.function.name} with arguments {arguments}. Error Message: {error}"
+            i += 1
 
-    completionRequest = client.chat.completions.create(
+    summaryRequest = client.chat.completions.create(
         model="gpt-4o",
         tools=tools,
-        messages=messages
+        messages=[{"role": "system",
+                 "content": """As a travel agent, you have received a user_request (see below). Additionally, you tried
+                  to fulfill the request step by step (see the executed steps in the system message). Please write an answer
+                  to the user_request, given the executed steps."""},
+                {"role": "user", "content": user_request},
+                {"role": "system",
+                 "content": executed_steps}
+                ]
+
         )
 
-    if completionRequest.choices[0].finish_reason == "tool_calls":
-        tool_call = completionRequest.choices[0].message.tool_calls[0]
-        arguments = json.loads(tool_call.function.arguments)
-        output = ""
-        try:
-            if tool_call.function.name == "calculate_hotel_cost":
-                output = calculate_hotel_cost(arguments["start_date"], arguments["end_date"])
-            elif tool_call.function.name == "give_tourist_information_space":
-                output = give_tourist_information_space(arguments["user_request"])
-            elif tool_call.function.name == "list_hotels":
-                output = list_hotels(arguments["location"])
-            elif tool_call.function.name == "give_hotel_information":
-                output = give_hotel_information(arguments["hotel_name"])
-            elif tool_call.function.name == "collect_information_from_the_user_description":
-                output = collect_information_from_the_user(arguments["question"])
-            elif tool_call.function.name == "book_hotel":
-                output = book_hotel(arguments["hotel_name"], arguments["check_in"], arguments["check_out"])
-            elif tool_call.function.name == "book_flights":
-                output = book_flights(arguments["arrival_port"], arguments["outbound_date"], arguments["return_date"])
-            this_step = memory(tool_call.function.name, arguments, output, i)
-            print(this_step)
-            executed_steps += this_step
-        except Exception as error:
-            this_step = f"error while calling {tool_call.function.name} with arguments {arguments}. Error Message: {error}"
-
-
-
-
-    llm_answer = completionRequest.choices[0].message
-    messages.append(llm_answer)
-    assistantMessage = llm_answer.content
+    llm_answer = summaryRequest.choices[0].message.content
+    messages.append({"role": "assistant", "content": llm_answer})
+    assistantMessage = llm_answer

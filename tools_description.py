@@ -24,7 +24,7 @@ calculate_hotel_cost_tool_description = {
 give_tourist_information_space_description = {
     "type": "function",
     "function": {
-        "name": "answer_space_travel_questions",
+        "name": "give_tourist_information_space",
         "description": """User Requests that search for information on travel location in Space (Luna, Mars or Massage)
                        can be answered here. This is used for general information of the surrounding area and cities. 
                        Information about the hotels can not be found here. 

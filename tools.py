@@ -84,7 +84,7 @@ def give_hotel_information(hotel_name):
     for row in availability_rows:
         availability_string += f"from: {row[0]}, to: {row[1]} and "
 
-    print(f"hotel costs: {detail_rows[0][1]}, hotel availabilities: {availability_string[:-4]}")
+    return f"hotel costs: {detail_rows[0][1]}, hotel availabilities: {availability_string[:-4]}"
 
 def collect_information_from_the_user(question_to_ask):
     response = str(input(question_to_ask + "\n"))
