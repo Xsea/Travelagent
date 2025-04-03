@@ -29,7 +29,7 @@ setx OPENAI_API_KEY "your_api_key_here"
 ```
 ### Python Setup
 It is strongly recommended to use virtual environments for working on 
-python projects, as this the only way for package managment. We assume you have installed python3 with the current version. 
+python projects, as this the only way for package managment. We assume you have installed python3 with the current version. (On Windows, write `python` instead of `python3`.)
 #### Create the venv
 ```bash
 python3 -m venv travel_agent_env
@@ -43,7 +43,8 @@ source travel_agent_env/bin/activate
 
 #### Windows: 
 ```bash
-travel_agent_env/bin/activate.bat
+Set-ExecutionPolicy Unrestricted -Scope Process   # Allows script execution for this session
+travel_agent_env/Scripts/activate.bat
 ```
 What this does is, that now all packages (dependencies) you install will only be valid for this venv.
 
