@@ -49,8 +49,8 @@ def planning(user_request, chat_history):
         )
     return completion_plan.choices[0].message.content
 
-### Memory
-def memory(tool_name, arguments, output, step):
+### Short term memory
+def short_term_memory(tool_name, arguments, output, step):
     # explain what happened in this step, so that the llm knows can decide the next step
     executed_step = "\n ****** EXECUTED STEP " + str(step+1) + " ******"
     if tool_name == "calculate_hotel_cost":
@@ -203,7 +203,7 @@ while True:
                     output = book_hotel(arguments["hotel_name"], arguments["check_in"], arguments["check_out"])
                 elif tool_call.function.name == "book_flights":
                     output = book_flights(arguments["arrival_port"], arguments["outbound_date"], arguments["return_date"])
-                this_step = memory(tool_call.function.name, arguments, output, i)
+                this_step = short_term_memory(tool_call.function.name, arguments, output, i)
                 print(this_step)
                 executed_steps += this_step
             except Exception as error:
