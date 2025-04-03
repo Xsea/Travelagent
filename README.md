@@ -16,7 +16,7 @@ If you do not have an OpenAI API Account, please create one. It should start you
 which is enough for the workshop: Create OpenAi API account: https://platform.openai.com/ (Sign Up button is on the top right)
 
 After creating the account, you need to set the API Key as an ENV variable on your computer. 
-    You can create a new account under "Your Profile" -> "API Keys". Then export the key the following way:
+    You can create a new API Key under "Your Profile" -> "API Keys". Then export the key the following way:
 
 #### Mac/Linux:
 ```bash
@@ -49,7 +49,7 @@ What this does is, that now all packages (dependencies) you install will only be
 
 ### Install necessary python dependencies
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Install Podman
