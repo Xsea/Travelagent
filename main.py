@@ -1,6 +1,5 @@
 import json
 
-from exceptiongroup import catch
 from openai import OpenAI
 
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
@@ -133,6 +132,7 @@ while True:
                     Please output your suggestion for a next step in the following valid JSON format with the following way 
                     No multi tool use parallel! Always only give one tool recommendation
                     You also get access to the chat history below.
+                    ONLY ANSWER WITH JSON, USE THE FORMAT BELOW. DO NOT FORMAT THE MESSAGE, JUST ANSWER WITH JSON.
                     (Read the Text between $$ as explanations of the parameter):
                     {
                        "chainOfThoughts": $Your chain of thoughts while solving this tasks. Fill it with your reasoning$
