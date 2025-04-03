@@ -18,8 +18,8 @@ tools = [calculate_hotel_cost_tool_description, give_tourist_information_space_d
 def planning(user_request, chat_history):
     ### Design a prompt that generates a plan for the agent
 
-### Memory
-def memory():
+### Short term memory
+def short_term_memory():
     # design a method that takes all necessary information and writes a small summary of the step
     # this helps the LLM to identify the tasks that have been done
 
@@ -55,7 +55,7 @@ while True:
     # this will help us to identify the next step
     # using the output of the next step, determine which tool to use
     # after the tool has been determined, we need to call our method
-    # then use the memory to update our executed steps
+    # then use the short term memory to update our executed steps
 
 
 
