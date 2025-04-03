@@ -1,6 +1,5 @@
 import json
 
-from exceptiongroup import catch
 from openai import OpenAI
 
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
