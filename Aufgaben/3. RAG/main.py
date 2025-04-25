@@ -2,8 +2,8 @@ import json
 
 from openai import OpenAI
 
-from tools import calculate_hotel_cost, answer_space_travel
-from tools_description import calculate_hotel_cost_tool, answer_space_travel_tool
+from tools import calculate_hotel_cost
+from tools_description import calculate_hotel_cost_tool
 
 client = OpenAI()
 
@@ -17,7 +17,7 @@ messages = [{"role": "system",
              Please answer questions for space travel seriously!
              """}]
 
-tools = [calculate_hotel_cost_tool, answer_space_travel_tool]
+tools = [calculate_hotel_cost_tool]
 while True:
     userRequest = str(input(assistantMessage + "\n"))
     if userRequest == "thanks":

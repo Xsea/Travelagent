@@ -21,7 +21,7 @@ calculate_hotel_cost_tool = {
     }
 }
 
-answer_space_travel_tool = {
+give_tourist_information_space_description = {
     "type": "function",
     "function": {
         "name": "answer_space_travel_questions",

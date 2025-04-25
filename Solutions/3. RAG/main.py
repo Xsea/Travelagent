@@ -2,8 +2,8 @@ import json
 
 from openai import OpenAI
 
-from tools import calculate_hotel_cost, answer_space_travel
-from tools_description import calculate_hotel_cost_tool, answer_space_travel_tool
+from tools import calculate_hotel_cost, give_tourist_information_space
+from tools_description import calculate_hotel_cost_tool, give_tourist_information_space_description
 
 client = OpenAI()
 
@@ -17,7 +17,7 @@ messages = [{"role": "system",
              Please answer questions for space travel seriously!
              """}]
 
-tools = [calculate_hotel_cost_tool, answer_space_travel_tool]
+tools = [calculate_hotel_cost_tool, give_tourist_information_space]
 while True:
     userRequest = str(input(assistantMessage + "\n"))
     if userRequest == "thanks":
@@ -45,7 +45,7 @@ while True:
             )
         elif tool_call.function.name == "answer_space_travel_questions":
             # get closest texts
-            texts = answer_space_travel(arguments["user_request"])
+            texts = give_tourist_information_space(arguments["user_request"])
             # if you want, make copy of messages to save some money (texts will not always be in the context)
             # however, maybe the chat flow will be better if it stays, you decide
             space_message = messages.copy()

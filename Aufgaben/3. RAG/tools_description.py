@@ -21,4 +21,4 @@ calculate_hotel_cost_tool = {
     }
 }
 
-# add space travel tool here
+# add tool for tourist information in space

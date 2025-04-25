@@ -14,10 +14,7 @@ tools = [calculate_hotel_cost_tool_description, give_tourist_information_space_d
          give_hotel_information_description, book_hotel_description,
          book_flights_description, collect_information_from_the_user_description]
 
-#### Planning
-def planning(user_request, chat_history):
-    ### Design a prompt that generates a plan for the agent
-    ### it is helpful to tell the LLM in which format the output should be
+
 
 ### Short term memory
 def short_term_memory():
@@ -47,33 +44,12 @@ while True:
     if user_request == "thanks":
         break
     messages.append({"role": "user", "content": user_request})
-    # read user input and devise a plan on how to solve it
-    the_plan = planning()
-    print(the_plan)
-    i = 0
-    # Now comes the agent loop!
-    # Following needs to happen:
-    # create a loop that works a fixed set of numbers (to avoid infinite loops)
-    ###########
-        # Create a request that takes the plan and executed steps (beginning empty) and compares them
-        # this will help us to identify the next step
-        # let the LLM answer in a given json format,
-        # so that you have more control how the answer looks like and can manipulate it
-        # The output we call "next_step"
-        ##################
-        # check if the next step should break the loop (task is finished)
-        #################
-        # using the output of the next step, determine which tool to use
-        #################
-        # after the tool has been determined, we need to call our method
-        ##################
-        # then use the short term memory to update our executed steps
-        # we are done and the next iteration can start
-    ###########
+    chat_history = flatten_history(messages)
+    ## get the plan for the user request
 
+    ## run the agent
 
-    # in the end, use the executed steps to write a summary for the user to print
-
+    # use the output to let an llm write a summary of what was done and give it as output to the user
 
     llm_answer =
     messages.append({"role": "assistant", "content": llm_answer})

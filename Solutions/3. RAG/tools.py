@@ -48,7 +48,7 @@ def retrieve_closest_texts(vector):
             texts.append(f.read())
     return texts
 
-def answer_space_travel(user_request):
+def give_tourist_information_space(user_request):
     # vectorize user request
     vector = vectorize_user_request(user_request)
     # retrieve the closest texts
