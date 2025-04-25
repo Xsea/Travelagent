@@ -156,3 +156,6 @@ book_flights_description = {
     }
 }
 
+tool_belt = [calculate_hotel_cost_tool_description, give_tourist_information_space_description, list_hotels_description,
+give_hotel_information_description, book_hotel_description, book_flights_description, collect_information_from_the_user_description]
+

@@ -6,9 +6,10 @@ def next_step(plan, executed_steps, chat_history, tools):
     # this gives you  more control how the answer looks like and can manipulate it
     # the JSON should contain following parameters:
         # 1. chainOfThoughts (as a first parameter for the llm to think)
-        # 2. nextStep: (the determined next step - this is the interesting part which will be used to determine the tool
+        # 2. nextStep: (the determined next step - this is the interesting part which will be used to determine the tool)
         # 3. finish: a boolean, only true if the agent determines the task to be finished and then can be used to break the loop
     # The output we call "next_step"
     ###########
 
-## TODO add dummy execution
+## TODO add dummy execution ---- and add structured output -- say the output is just some text
+# TODO Provide DataObject for verifiable structured output

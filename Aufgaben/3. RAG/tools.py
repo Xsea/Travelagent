@@ -28,4 +28,4 @@ def calculate_hotel_cost(start_date, end_date):
 # for this method you need three parts:
 # 1. Vectorize the incoming user chat message
 # 2. Use the vector to search the vectorDB for the closest chunks
-# 3. Use the file names to which the chunks belong, and return them as context
+# 3. Use the file names to which the chunks belong, and return the text as context to the llm
