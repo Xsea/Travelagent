@@ -1,11 +1,11 @@
 import os
 import psycopg2
 import tiktoken
-from openai import OpenAI
+from openai import AzureOpenAI
 
 # To get the tokeniser corresponding to a specific model in the OpenAI API:
 tokenizer = tiktoken.encoding_for_model("gpt-4o")
-client = OpenAI()
+client = AzureOpenAI()
 db_params = {
     'dbname': 'vectorDB',
     'user': 'user',
