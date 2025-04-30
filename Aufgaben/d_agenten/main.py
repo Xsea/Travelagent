@@ -53,12 +53,14 @@ while True:
     i = 0
     # Now comes the agent loop!
     # Following needs to happen:
-    # create a loop that works a fixed set of numbers (to avoid infinite loops)
+    # CREATE A LOOP THAT WORKS A FIXED SET OF NUMBERS (to avoid infinite loops)
     ###########
         # Create a request that takes the plan and executed steps (beginning empty) and compares them
         # this will help us to identify the next step
         # let the LLM answer in a given json format,
         # so that you have more control how the answer looks like and can manipulate it
+        # Hint: To enforce a specific JSON output via pydantic, see:
+        # https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/structured-outputs?pivots=programming-language-python#getting-started
         # The output we call "next_step"
         ##################
         # check if the next step should break the loop (task is finished)
