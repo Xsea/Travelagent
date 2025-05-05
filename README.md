@@ -1,74 +1,91 @@
 # Travelagent
 
 ## Getting started
-This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script
-that will make use of vectorization, a database call to a dockerized db, and an llm inference. If everything works, you are ready for the workshop!
+
+This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script that will make use of vectorization, a database call to a dockerized db, and a LLM inference. If everything works, you are ready for the workshop!
+
 
 ### Git checkout
-Please checkout this git repository and change your working directory in your terminal to the root folder of this project (it includes this readme.md)
 
-### Create OpenAI Account and set Env Variable
-(Skip step 1+2 if you already have an account and an exported API Key)
+Please checkout this git repository and change your working directory in your terminal to the root folder of this project (it includes this `README.md`)
 
-In this workshop we use the OpenAI API  for LLM inference.
+### Export the provided API-Key
 
-If you do not have an OpenAI API Account, please create one. It should start you with a 5$ starting budget, 
-which is enough for the workshop: Create OpenAi API account: https://platform.openai.com/ (Sign Up button is on the top right)
-
-After creating the account, you need to set the API Key as an ENV variable on your computer. 
-    You can create a new API Key under "Your Profile" -> "API Keys". Then export the key the following way:
+In this workshop we use the Azure OpenAI API for LLM inference.
+Please use the API-Key send to you via E-Mail.
 
 #### Mac/Linux:
 ```bash
-export OPENAI_API_KEY="your_api_key_here"
+export AZURE_OPENAI_API_KEY=the_api_key_here
+export AZURE_OPENAI_ENDPOINT=https://2025-m3-workshop-ragenten.openai.azure.com/
+export OPENAI_API_VERSION=2025-01-01-preview
 ```
 
 #### Windows: 
+
 ```bash
-setx OPENAI_API_KEY "your_api_key_here"
+setx AZURE_OPENAI_API_KEY "the_api_key_here"
+setx AZURE_OPENAI_ENDPOINT "https://2025-m3-workshop-ragenten.openai.azure.com/"
+setx OPENAI_API_VERSION "2025-01-01-preview"
 ```
+
 ### Python Setup
-It is strongly recommended to use virtual environments for working on 
-python projects, as this the only way for package managment. We assume you have installed python3 with the current version. (On Windows, write `python` instead of `python3`.)
+
+We assume the usage of virtual environments for working on this (and other) python projects. We assume you have installed python3 with an up2date version. (On Windows, write `python` instead of `python3`.)
+
+
 #### Create the venv
+
 ```bash
-python3 -m venv travel_agent_env
+python3 -m venv .venv
 ```
+
+
 #### Activate the venv
 
+In that shell / terminal session all the installed packages are now available.
+
 #### Linux/Mac: 
+
 ```bash
-source travel_agent_env/bin/activate
+source .venv/bin/activate
 ```
+
 
 #### Windows: 
+
 ```bash
 Set-ExecutionPolicy Unrestricted -Scope Process   # Allows script execution for this session
-travel_agent_env/Scripts/activate.bat
+.venv/Scripts/activate.bat
 ```
-What this does is, that now all packages (dependencies) you install will only be valid for this venv.
+
 
 ### Install necessary python dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
+
 ### Install Podman
+
 (If you know your way around docker, can troubleshoot it yourself and have it installed, you can skip this step and use docker) 
 
-Podman is a free alternative to docker. We us it for our vectorDB. 
+Podman is a free alternative to Docker Desktop. We us it to run the vector database. 
 
 Follow the instructions here: https://podman.io/docs/installation, until you have run the commands ```podman machine init``` AND ```podman machine start``` (except Linux users, who can stop after downloading the cli)
 
+
 ### Building the image
+
 Now we that we have setup podman we can start to build our own container.
 Change your working directory: 
 ```bash 
-cd PGVectorCointainer
+cd PGVectorContainer
 ``` 
 and 
 ```bash 
-podman build -t postgres_container_image .
+podman build -t pgvector_m3 .
 ``` 
 to build the image
 
@@ -76,14 +93,13 @@ to build the image
 
 Start the container, inside is our data we will use for RAG:
 ```bash
-podman run -d -p 5432:5432 --name postgres_container postgres_container_image
+podman run -d -p 5432:5432 --name vector_database_m3 pgvector_m3
 ```
 Now everything should be setup! So you can finally run our start script and verify everything works: 
 ```bash
 cd ..
 ```
 ```bash
-python3 main.py
+python3 system_check.py
 ```
-and answer the Terminals question with "Tell me about Mars!". If you get some information about hotels and cities on Mars,
-    instead of the explanation of the red planet, everything works perfectly and you are ready to go. If not, please reach out!
+and answer the Terminals question with "Tell me about Mars!". If you get some information about hotels and cities on Mars, instead of the explanation of the red planet, everything works perfectly and you are ready to go. If not, please reach out!
