@@ -11,6 +11,7 @@ ENV POSTGRES_DB=vectorDB
 
 # Copy initialization script
 COPY ./initdb/init-vector.sql /docker-entrypoint-initdb.d/
+RUN chmod 777 /docker-entrypoint-initdb.d/init-vector.sql
 
 # Expose the PostgreSQL port
 EXPOSE 5432
