@@ -1,8 +1,8 @@
-from openai import OpenAI, OpenAI
+from openai import AzureOpenAI
 from Solutions.d_Agenten.tools_description import tool_belt
 
 
-client = OpenAI()
+client = AzureOpenAI()
 
 def determine_tool(next_step, tools):
     completion_tool = client.chat.completions.create(

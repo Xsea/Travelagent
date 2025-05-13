@@ -1,11 +1,11 @@
 import json
 
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from tools import calculate_hotel_cost, give_tourist_information_space
 from tools_description import calculate_hotel_cost_tool, give_tourist_information_space_description
 
-client = OpenAI()
+client = AzureOpenAI()
 
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",

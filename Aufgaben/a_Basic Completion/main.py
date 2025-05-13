@@ -1,6 +1,6 @@
-from openai import OpenAI
+from openai import AzureOpenAI
 
-client = OpenAI()
+client = AzureOpenAI()
 
 assistantMessage = "How can I help you?"
 # the chat history - you need to fill it

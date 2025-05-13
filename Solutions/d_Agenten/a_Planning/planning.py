@@ -1,7 +1,7 @@
 from Aufgaben.d_Agenten.tools_description import tool_belt
-from openai import OpenAI
+from openai import AzureOpenAI
 
-client = OpenAI()
+client = AzureOpenAI()
 
 #### Planning
 def planning(user_request: str, chat_history: str, tools):

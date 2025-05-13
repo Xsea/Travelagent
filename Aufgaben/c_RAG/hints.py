@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import AzureOpenAI
 import psycopg2
 
 db_params = {
@@ -12,7 +12,7 @@ connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
 
 
-client = OpenAI()
+client = AzureOpenAI()
 
 # this method vectorizes user requests with the same vectorizer that was used to store all text files
 def vectorize_user_request(user_request):

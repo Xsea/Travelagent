@@ -1,8 +1,8 @@
-from openai import OpenAI
+from openai import AzureOpenAI
 from Aufgaben.d_Agenten.tools_description import tool_belt
 from Aufgaben.d_Agenten.a_Planning.examplePlan import  plan as the_plan
 
-client = OpenAI()
+client = AzureOpenAI()
 
 def next_step(plan, executed_steps, chat_history, tools):
     completion_step = client.chat.completions.create(

@@ -1,6 +1,6 @@
 import json
 
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from Aufgaben.d_Agenten.tools_description import tool_belt
 from Solutions.d_Agenten.a_Planning.planning import planning
@@ -9,7 +9,7 @@ from Solutions.d_Agenten.b_Agent.tool_determination import determine_tool
 from Solutions.d_Agenten.b_Agent.tool_execution import tool_execution
 from Solutions.d_Agenten.c_Memory.short_term_memory import short_term_memory
 
-client = OpenAI()
+
 def agent_loop(user_request, chat_history):
     the_plan = planning(user_request, chat_history, tool_belt)
     i = 0
@@ -40,4 +40,6 @@ def agent_loop(user_request, chat_history):
     return executed_steps
 
 if __name__ == "__main__":
+    exit(1)
+    client = AzureOpenAI()
     print(agent_loop("Please book a hotel on mars for me", ""))

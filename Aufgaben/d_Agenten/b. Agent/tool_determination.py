@@ -1,8 +1,8 @@
-from openai import OpenAI
+from openai import AzureOpenAI
 from Aufgaben.d_Agenten.tools_description import tool_belt
 
 
-client = OpenAI()
+client = AzureOpenAI()
 
 def determine_tool(next_step, tools):
     # use the given string to let an llm decide which tools to use

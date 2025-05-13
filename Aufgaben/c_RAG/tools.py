@@ -1,5 +1,5 @@
 from datetime import datetime
-from openai import OpenAI
+from openai import AzureOpenAI
 import psycopg2
 
 db_params = {
@@ -12,7 +12,7 @@ db_params = {
 connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
 
-client = OpenAI()
+client = AzureOpenAI()
 
 def calculate_duration(start_date_string, end_date_string):
     start_date = datetime.strptime(start_date_string, "%Y-%m-%d")

@@ -1,6 +1,6 @@
 import json
 
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from Solutions.d_Agenten.d_AgentLoop.agent_loop import agent_loop
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
@@ -10,7 +10,7 @@ from tools_description import calculate_hotel_cost_tool_description, list_hotels
     give_tourist_information_space_description, book_hotel_description, book_flights_description, \
     collect_information_from_the_user_description
 
-client = OpenAI()
+client = AzureOpenAI()
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
              "content": """You are a space traveling agent, responsible for helping people planning their vacations. 
