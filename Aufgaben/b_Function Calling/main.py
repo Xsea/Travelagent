@@ -1,9 +1,9 @@
 import json
 
-from openai import OpenAI
-
 from tools import calculate_hotel_cost
 from tools_description import calculate_hotel_cost_tool
+
+from openai import OpenAI
 
 client = OpenAI()
 

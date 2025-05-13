@@ -2,26 +2,15 @@ import json
 
 from openai import OpenAI
 
+from Solutions.d_Agenten.d_AgentLoop.agent_loop import agent_loop
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
     collect_information_from_the_user, book_hotel, book_flights
-from tools_description import calculate_hotel_cost_tool_description, list_hotels_description, give_hotel_information_description, \
-    give_tourist_information_space_description, book_hotel_description, book_flights_description, collect_information_from_the_user_description
+from tools_description import calculate_hotel_cost_tool_description, list_hotels_description, \
+    give_hotel_information_description, \
+    give_tourist_information_space_description, book_hotel_description, book_flights_description, \
+    collect_information_from_the_user_description
 
 client = OpenAI()
-
-### Tools
-tools = [calculate_hotel_cost_tool_description, give_tourist_information_space_description, list_hotels_description,
-         give_hotel_information_description, book_hotel_description,
-         book_flights_description, collect_information_from_the_user_description]
-
-
-
-### Short term memory
-def short_term_memory():
-    # design a method that takes all necessary information and writes a small summary of the step
-    # this helps the LLM to identify the tasks that have been done
-
-
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
              "content": """You are a space traveling agent, responsible for helping people planning their vacations. 
@@ -30,7 +19,7 @@ messages = [{"role": "system",
              location to spend their holidays. 
              If the user asks for location of space travel, you can use the give_tourist_information_space tool. 
              Please answer questions for space travel seriously!
-             
+
              """}]
 
 def flatten_history(messages_array):
@@ -44,13 +33,21 @@ while True:
     if user_request == "thanks":
         break
     messages.append({"role": "user", "content": user_request})
-    chat_history = flatten_history(messages)
-    ## get the plan for the user request
+    # read user input and devise a plan on how to solve it
+    executed_steps = agent_loop(user_request, flatten_history(messages))
 
-    ## run the agent
+    summaryRequest = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "system",
+                   "content": """As a travel agent, you have received a user_request (see below). Additionally, you tried
+                  to fulfill the request step by step (see the executed steps in the system message). Please write an answer
+                  to the user_request, given the executed steps."""},
+                  {"role": "user", "content": user_request},
+                  {"role": "system",
+                   "content": executed_steps}
+                  ]
+        )
 
-    # use the output to let an llm write a summary of what was done and give it as output to the user
-
-    llm_answer =
+    llm_answer = summaryRequest.choices[0].message.content
     messages.append({"role": "assistant", "content": llm_answer})
     assistantMessage = llm_answer

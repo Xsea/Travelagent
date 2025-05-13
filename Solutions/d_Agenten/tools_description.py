@@ -14,8 +14,12 @@ calculate_hotel_cost_tool_description = {
                     "type": "string",
                     "description": """The day the person leaves the hotel. Given in format yyyy-mm-dd""",
                 },
+                "price": {
+                    "type": "number",
+                    "description": """The nightly cost of the hotel""",
+                },
             },
-            "required": ["start_date", "end_date"],
+            "required": ["start_date", "end_date", "price"],
             "additionalProperties": False,
         }
     }
@@ -155,3 +159,6 @@ book_flights_description = {
         }
     }
 }
+
+tool_belt = [calculate_hotel_cost_tool_description, give_tourist_information_space_description, list_hotels_description,
+give_hotel_information_description, book_hotel_description, book_flights_description, collect_information_from_the_user_description]

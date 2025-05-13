@@ -1,4 +1,8 @@
 from Aufgaben.d_Agenten.tools_description import tool_belt
+from openai import OpenAI
+
+client = OpenAI()
+
 #### Planning
 def planning(user_request: str, chat_history: str, tools):
     ### Design a prompt that generates a plan for the agent

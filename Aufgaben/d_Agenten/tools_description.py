@@ -14,6 +14,10 @@ calculate_hotel_cost_tool_description = {
                     "type": "string",
                     "description": """The day the person leaves the hotel. Given in format yyyy-mm-dd""",
                 },
+                "price": {
+                    "type": "number",
+                    "description": """The nightly cost of the hotel""",
+                },
             },
             "required": ["start_date", "end_date"],
             "additionalProperties": False,

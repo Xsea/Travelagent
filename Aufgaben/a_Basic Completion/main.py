@@ -1,7 +1,5 @@
 from openai import OpenAI
 
-# TODO Marcus, wenn du den client überall austauschst, vielleicht erstell irgendwo eine globale client Variable?
-#  Dann importieren wir die lieber, macht das austauschen leichter
 client = OpenAI()
 
 assistantMessage = "How can I help you?"
