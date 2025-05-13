@@ -40,6 +40,5 @@ def agent_loop(user_request, chat_history):
     return executed_steps
 
 if __name__ == "__main__":
-    exit(1)
     client = AzureOpenAI()
     print(agent_loop("Please book a hotel on mars for me", ""))

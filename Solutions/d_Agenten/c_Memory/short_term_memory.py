@@ -40,4 +40,5 @@ def short_term_memory(tool, output, step):
     return executed_step
 
 if __name__ == "__main__":
-    print(short_term_memory(determine_tool("calculate the costs for a hotel with checkin date 27.03.2024, checkout date 10.04.2024 and a nightly cost of 235", tool_belt), "3290", 0))
+    tool = determine_tool("calculate the costs for a hotel with checkin date 27.03.2024, checkout date 10.04.2024 and a nightly cost of 235", tool_belt)
+    print(short_term_memory(tool.message.tool_calls[0], "3290", 0))
