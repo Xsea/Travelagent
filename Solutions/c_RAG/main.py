@@ -17,7 +17,7 @@ messages = [{"role": "system",
              Please answer questions for space travel seriously!
              """}]
 
-tools = [calculate_hotel_cost_tool, give_tourist_information_space]
+tools = [calculate_hotel_cost_tool, give_tourist_information_space_description]
 while True:
     userRequest = str(input(assistantMessage + "\n"))
     if userRequest == "thanks":
