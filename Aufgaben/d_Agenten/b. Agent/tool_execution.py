@@ -11,4 +11,6 @@ def tool_execution(tool_call):
     # return the output
     return ""
 
-tool_execution(determine_tool("calculate the costs for a hotel with checkin date 27.03.2024, checkout date 10.04.2024 and a nightly cost of 235", tool_belt))
+
+if __name__ == "__main__":
+    print(tool_execution(determine_tool("calculate the costs for a hotel with checkin date 27.03.2024, checkout date 10.04.2024 and a nightly cost of 235", tool_belt)))

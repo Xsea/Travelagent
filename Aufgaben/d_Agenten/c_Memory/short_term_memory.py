@@ -18,4 +18,6 @@ def short_term_memory(tool_name, arguments, output, step):
         executed_step += ""
     return executed_step
 
-print(short_term_memory("calculate_hotel_cost", {'start_date': '2024-03-27', 'end_date': '2024-04-10', 'price': 235}, "3290", 0))
+
+if __name__ == "__main__":
+    print(short_term_memory("calculate_hotel_cost", {'start_date': '2024-03-27', 'end_date': '2024-04-10', 'price': 235}, "3290", 0))

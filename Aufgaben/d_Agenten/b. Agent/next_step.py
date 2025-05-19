@@ -39,6 +39,6 @@ def next_step(plan, executed_steps, chat_history, tools):
         )
     return completion_step.choices[0].message.content
 
-print(next_step(plan, "", "", tool_belt))
 
-# TODO (maybe) Provide DataObject for verifiable structured output
+if __name__ == "__main__":
+    print(next_step(plan, "", "", tool_belt))

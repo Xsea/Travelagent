@@ -24,4 +24,5 @@ def planning(user_request: str, chat_history: str, tools):
         )
     return completion_plan.choices[0].message.content
 
-print(planning("Please book a hotel on mars for me", "", tool_belt))
+if __name__ == "__main__":
+    print(planning("Please book a hotel on mars for me", "", tool_belt))

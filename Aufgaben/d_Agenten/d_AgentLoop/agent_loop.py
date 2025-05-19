@@ -43,5 +43,5 @@ def agent_loop(user_request, chat_history):
         i += 1
     return executed_steps
 
-print(agent_loop("Please book a hotel on mars for me", ""))
-
+if __name__ == "__main__":
+    print(agent_loop("Please book a hotel on mars for me", ""))
