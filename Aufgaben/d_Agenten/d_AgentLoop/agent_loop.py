@@ -3,11 +3,11 @@ import json
 from openai import AzureOpenAI
 
 from Aufgaben.d_Agenten.tools_description import tool_belt
-from Solutions.d_Agenten.a_Planning.planning import planning
-from Solutions.d_Agenten.b_Agent.next_step import next_step
-from Solutions.d_Agenten.b_Agent.tool_determination import determine_tool
-from Solutions.d_Agenten.b_Agent.tool_execution import tool_execution
-from Solutions.d_Agenten.c_Memory.short_term_memory import short_term_memory
+from Aufgaben.d_Agenten.a_Planning.planning import planning
+from Aufgaben.d_Agenten.b_Agent.next_step import next_step
+from Aufgaben.d_Agenten.b_Agent.tool_determination import determine_tool
+from Aufgaben.d_Agenten.b_Agent.tool_execution import tool_execution
+from Aufgaben.d_Agenten.c_Memory.short_term_memory import short_term_memory
 
 client = AzureOpenAI()
 def agent_loop(user_request, chat_history):
