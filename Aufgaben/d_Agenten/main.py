@@ -2,7 +2,7 @@ import json
 
 from openai import AzureOpenAI
 
-from Solutions.d_Agenten.d_AgentLoop.agent_loop import agent_loop
+from Aufgaben.d_Agenten.d_AgentLoop.agent_loop import agent_loop
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
     collect_information_from_the_user, book_hotel, book_flights
 from tools_description import calculate_hotel_cost_tool_description, list_hotels_description, \

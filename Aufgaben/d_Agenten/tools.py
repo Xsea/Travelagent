@@ -1,5 +1,6 @@
 from datetime import datetime
 from openai import AzureOpenAI
+from pathlib import Path
 import psycopg2
 import sqlite3
 
@@ -14,7 +15,7 @@ connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
 
 
-con = sqlite3.connect("../../travel.db")
+con = sqlite3.connect(Path(__file__) / ".." / ".." / ".." / "travel.db")
 cur = con.cursor()
 
 
