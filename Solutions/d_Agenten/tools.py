@@ -16,7 +16,7 @@ connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
 
 
-con = sqlite3.connect(Path(__file__) / ".." / ".." / "travel.db")
+con = sqlite3.connect(Path(__file__) / ".." / ".." / ".." / "travel.db")
 cur = con.cursor()
 
 
