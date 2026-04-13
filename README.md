@@ -17,16 +17,16 @@ Please use the API-Key send to you via E-Mail.
 #### Mac/Linux:
 ```bash
 export AZURE_OPENAI_API_KEY=the_api_key_here
-export AZURE_OPENAI_ENDPOINT=https://2025-m3-workshop-ragenten.openai.azure.com/
-export OPENAI_API_VERSION=2025-01-01-preview
+export AZURE_OPENAI_ENDPOINT=https://m3-2026-conference-workshop.cognitiveservices.azure.com
+export OPENAI_API_VERSION=2025-04-01-preview
 ```
 
 #### Windows: 
 
 ```bash
 setx AZURE_OPENAI_API_KEY "the_api_key_here"
-setx AZURE_OPENAI_ENDPOINT "https://2025-m3-workshop-ragenten.openai.azure.com/"
-setx OPENAI_API_VERSION "2025-01-01-preview"
+setx AZURE_OPENAI_ENDPOINT "https://m3-2026-conference-workshop.cognitiveservices.azure.com/"
+setx OPENAI_API_VERSION "2025-04-01-preview"
 ```
 
 ### Python Setup

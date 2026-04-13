@@ -1,5 +1,5 @@
 from openai import AzureOpenAI
-import psycopg2
+import psycopg
 
 db_params = {
     'dbname': 'vectorDB',
@@ -8,7 +8,7 @@ db_params = {
     'host': 'localhost',
     'port': 5432
 }
-connection = psycopg2.connect(**db_params)
+connection = psycopg.connect(**db_params)
 cursor = connection.cursor()
 
 client = AzureOpenAI()
@@ -53,7 +53,7 @@ text = answer_space_travel(userRequest)
 messages.append({"role": "user", "content": userRequest})
 messages.append({"role": "system", "content": text})
 completionRequest = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.4-mini",
     messages= messages
     )
 
