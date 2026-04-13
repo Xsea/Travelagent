@@ -1,7 +1,9 @@
 import json
+
+from openai import AzureOpenAI
+
 from tools import calculate_hotel_cost
 from tools_description import calculate_hotel_cost_tool
-from openai import AzureOpenAI
 
 client = AzureOpenAI()
 
@@ -23,7 +25,7 @@ while True:
     messages.append({"role": "user", "content": userRequest})
     # read user input and devise a plan on how to solve it
     completionRequest = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         tools=tools,
         messages= messages
         )
@@ -38,7 +40,7 @@ while True:
                  arguments["start_date"], arguments["end_date"], cost
                  )})
             completionRequest = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5.4-mini",
                 messages= messages
             )
         # add a new tool to the descriptions, that describes a tool that is able to get information about space locations

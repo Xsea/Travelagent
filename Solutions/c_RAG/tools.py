@@ -1,56 +1,65 @@
+import sqlite3
+import struct
 from datetime import datetime
+from pathlib import Path
+
+import sqlite_vec
 from openai import AzureOpenAI
-import psycopg2
 
-db_params = {
-    'dbname': 'vectorDB',
-    'user': 'user',
-    'password': 'pass',
-    'host': 'localhost',
-    'port': 5432
-}
-connection = psycopg2.connect(**db_params)
-cursor = connection.cursor()
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DB_PATH = PROJECT_ROOT / "travel.db"
 
+con = sqlite3.connect(DB_PATH)
+con.enable_load_extension(True)
+sqlite_vec.load(con)
+con.enable_load_extension(False)
 
 client = AzureOpenAI()
+
 
 def calculate_duration(start_date_string, end_date_string):
     start_date = datetime.strptime(start_date_string, "%Y-%m-%d")
     end_date = datetime.strptime(end_date_string, "%Y-%m-%d")
-    delta = end_date-start_date
+    delta = end_date - start_date
     return delta.days
+
 
 def calculate_hotel_cost(start_date, end_date):
     number_of_days = calculate_duration(start_date, end_date)
     return number_of_days * 100
 
+
 # this method vectorizes user requests with the same vectorizer that was used to store all text files
 def vectorize_user_request(user_request):
-    return client.embeddings.create(input=[user_request], model="text-embedding-3-large").data[0].embedding
+    embedding = client.embeddings.create(
+        input=[user_request], model="text-embedding-3-large"
+    ).data[0].embedding
+    return struct.pack(f"{len(embedding)}f", *embedding)
 
-# this method uses an SQL request on the pgvector database
-# using the cosine distance, we find the 5 closest matching chunks, and return the corresponding texts
-# you can play around here for very different results
-def retrieve_closest_texts(vector):
+
+# this method runs a vector search against the sqlite-vec virtual table
+# and returns the contents of the closest source files
+def retrieve_closest_texts(packed_vector):
+    rows = con.execute(
+        """
+        SELECT name FROM space_travel_vectors
+        WHERE embedding MATCH ?
+        ORDER BY distance
+        LIMIT 5
+        """,
+        (packed_vector,),
+    ).fetchall()
+    seen = set()
     texts = []
-    select_query = f"SELECT * FROM space_travel_vectors ORDER BY vector_column <=> '{vector}' LIMIT 5;"
-    cursor.execute(select_query)
-    rows = cursor.fetchall()
-    # return the texts of the files
-    named_files = []
-    for row in rows:
-        named_files.append(row[1])
-    for file in set(named_files):
-        # check if you need to adapt paths when using the solution
-        file = "../../" + file
-        with open(file, 'r') as f:
+    for (file_path,) in rows:
+        if file_path in seen:
+            continue
+        seen.add(file_path)
+        with open(PROJECT_ROOT / file_path, "r") as f:
             texts.append(f.read())
     return texts
 
+
 def give_tourist_information_space(user_request):
-    # vectorize user request
-    vector = vectorize_user_request(user_request)
-    # retrieve the closest texts
-    texts = retrieve_closest_texts(vector)
-    return texts
+    packed = vectorize_user_request(user_request)
+    return retrieve_closest_texts(packed)

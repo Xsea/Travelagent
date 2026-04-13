@@ -21,12 +21,11 @@ while True:
         break
 
     messages.append({"role": "user", "content": userRequest})
-    # read user input and devise a plan on how to solve it
     completionRequest = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         tools=tools,
         messages= messages
-        )
+    )
 
     if completionRequest.choices[0].finish_reason == "tool_calls":
         tool_call = completionRequest.choices[0].message.tool_calls[0]
@@ -38,7 +37,7 @@ while True:
                  arguments["start_date"], arguments["end_date"], cost
                  )})
             completionRequest = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5.4-mini",
                 messages= messages
             )
 

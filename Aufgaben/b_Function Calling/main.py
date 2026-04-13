@@ -1,9 +1,9 @@
 import json
 
+from openai import AzureOpenAI
+
 from tools import calculate_hotel_cost
 from tools_description import calculate_hotel_cost_tool
-
-from openai import AzureOpenAI
 
 client = AzureOpenAI()
 
@@ -24,7 +24,7 @@ while True:
     messages.append({"role": "user", "content": userRequest})
     # fill the tools property in the completion request
     completionRequest = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         messages= messages
     )
 
@@ -35,7 +35,6 @@ while True:
     # after you have calculated the cost: How do you now get this information to the LLM?
     # And how do you get the answer the LLM would generate?
 
-    ##########################
     llm_answer = completionRequest.choices[0].message
     messages.append(llm_answer)
     assistantMessage = llm_answer.content

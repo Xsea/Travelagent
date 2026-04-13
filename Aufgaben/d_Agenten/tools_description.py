@@ -1,165 +1,115 @@
+"""JSON schemas for the agent tools — one per function in tools.py."""
+
 calculate_hotel_cost_tool_description = {
     "type": "function",
     "function": {
         "name": "calculate_hotel_cost",
-        "description": "Given a start and end date, I will be able to calculate how much the stay at the hotel costs",
+        "description": "Given a start date, end date and nightly price, calculate the total stay cost.",
         "parameters": {
             "type": "object",
             "properties": {
                 "start_date": {
                     "type": "string",
-                    "description": """The day the person arrives for their hotel stay. Given in format yyyy-mm-dd""",
+                    "description": "Check-in date in format yyyy-mm-dd",
                 },
                 "end_date": {
                     "type": "string",
-                    "description": """The day the person leaves the hotel. Given in format yyyy-mm-dd""",
+                    "description": "Check-out date in format yyyy-mm-dd",
                 },
                 "price": {
                     "type": "number",
-                    "description": """The nightly cost of the hotel""",
+                    "description": "The nightly cost of the hotel in €",
                 },
             },
-            "required": ["start_date", "end_date"],
+            "required": ["start_date", "end_date", "price"],
             "additionalProperties": False,
-        }
-    }
-}
-
-give_tourist_information_space_description = {
-    "type": "function",
-    "function": {
-        "name": "give_tourist_information_space",
-        "description": """User Requests that search for information on travel location in Space (Luna, Mars or Massage)
-                       can be answered here. This is used for general information of the surrounding area and cities. 
-                       Information about the hotels can not be found here. 
-                       Only use, if the information is not found in the context""",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "user_request": {
-                    "type": "string",
-                    "description": """the user request""",
-                },
-            },
-            "required": ["user_request"],
-            "additionalProperties": False,
-        }
-    }
+        },
+    },
 }
 
 list_hotels_description = {
     "type": "function",
     "function": {
         "name": "list_hotels",
-        "description": """Given a planet (or moon), I will list only the names of all available hotels""",
+        "description": "Given a planet or moon, list the names of all available hotels there.",
         "parameters": {
             "type": "object",
             "properties": {
                 "location": {
                     "type": "string",
-                    "description": """the planet (Luna, Mars or Massage) for which you need the list of hotels""",
-                    },
+                    "description": "The destination (Luna, Mars, or Massage)",
                 },
+            },
             "required": ["location"],
             "additionalProperties": False,
-        }
-    }
+        },
+    },
 }
 
 give_hotel_information_description = {
     "type": "function",
     "function": {
         "name": "give_hotel_information",
-        "description": """Given a Hotel Name, I will return all information regarding availability and prices""",
+        "description": "Given a hotel name, return its price per night and available date ranges.",
         "parameters": {
             "type": "object",
             "properties": {
                 "hotel_name": {
                     "type": "string",
-                    "description": """the name of the Hotel, for which you need the information""",
-                    },
+                    "description": "The name of the hotel",
                 },
+            },
             "required": ["hotel_name"],
             "additionalProperties": False,
-        }
-    }
-}
-
-collect_information_from_the_user_description = {
-"type": "function",
-    "function": {
-        "name": "collect_information_from_the_user",
-        "description": """I can ask the user a question, the answer will be returned to you""",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "question": {
-                    "type": "string",
-                    "description": """the question you want to ask the user""",
-                    },
-                },
-            "required": ["question"],
-            "additionalProperties": False,
-        }
-    }
+        },
+    },
 }
 
 book_hotel_description = {
-"type": "function",
+    "type": "function",
     "function": {
         "name": "book_hotel",
-        "description": """Given all necessary information, I will book the travel, I will return a summary""",
+        "description": "Book a hotel for a given date range. Returns a confirmation with the total cost.",
         "parameters": {
             "type": "object",
             "properties": {
                 "hotel_name": {
                     "type": "string",
-                    "description": """the name of the Hotel, which I should book""",
+                    "description": "The name of the hotel to book",
                 },
                 "check_in": {
                     "type": "string",
-                    "description": """the check_in date in format: yyyy-mm-dd""",
+                    "description": "Check-in date in format yyyy-mm-dd",
                 },
                 "check_out": {
                     "type": "string",
-                    "description": """the check_in date in format: yyyy-mm-dd""",
+                    "description": "Check-out date in format yyyy-mm-dd",
                 },
-             },
-
+            },
             "required": ["hotel_name", "check_in", "check_out"],
             "additionalProperties": False,
-        }
-    }
+        },
+    },
 }
 
-book_flights_description = {
-"type": "function",
+give_tourist_information_space_description = {
+    "type": "function",
     "function": {
-        "name": "book_flights",
-        "description": """Given all necessary information, I will book the flight, I will return a summary""",
+        "name": "give_tourist_information_space",
+        "description": (
+            "Answer general tourist questions about space destinations (Luna, Mars, Massage) using RAG. "
+            "Use this for sights, activities, and atmosphere — NOT for hotel listings or prices."
+        ),
         "parameters": {
             "type": "object",
             "properties": {
-                "arrival_port": {
+                "user_request": {
                     "type": "string",
-                    "description": """the location of the arrival""",
+                    "description": "The user's question, in natural language",
                 },
-                "outbound_date": {
-                    "type": "string",
-                    "description": """the outbound flight date in format: yyyy-mm-dd""",
-                },
-                "return_date": {
-                    "type": "string",
-                    "description": """the return flight date in format: yyyy-mm-dd""",
-                },
-             },
-
-            "required": ["arrival_port", "outbound_date", "return_date"],
+            },
+            "required": ["user_request"],
             "additionalProperties": False,
-        }
-    }
+        },
+    },
 }
-
-tool_belt = [calculate_hotel_cost_tool_description, give_tourist_information_space_description, list_hotels_description,
-give_hotel_information_description, book_hotel_description, book_flights_description, collect_information_from_the_user_description]
-
