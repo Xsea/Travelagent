@@ -2,3 +2,5 @@
 __pycache__/*
 travel_agent_env/*
 .env
+.venv
+**/travel.db
