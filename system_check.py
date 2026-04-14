@@ -53,7 +53,7 @@ text = answer_space_travel(userRequest)
 messages.append({"role": "user", "content": userRequest})
 messages.append({"role": "system", "content": text})
 completionRequest = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.4-mini",
     messages= messages
     )
 
