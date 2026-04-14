@@ -1,105 +1,91 @@
 # Travelagent
 
+A workshop on building a Travel Agent with the Azure OpenAI API: function calling, RAG, and agent loops.
+
 ## Getting started
 
-This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script that will make use of vectorization, a database call to a dockerized db, and a LLM inference. If everything works, you are ready for the workshop!
+This guide sets everything up for the workshop day. At the end you'll run a small smoke-test script that uses vector search and an LLM call. If it succeeds, you're ready.
 
+### 1. Git checkout
 
-### Git checkout
+Clone this repository and `cd` into the project root (the folder containing this `README.md`).
 
-Please checkout this git repository and change your working directory in your terminal to the root folder of this project (it includes this `README.md`)
+### 2. Set the API key
 
-### Export the provided API-Key
+We use the Azure OpenAI API for LLM inference. Use the API key sent to you via email.
 
-In this workshop we use the Azure OpenAI API for LLM inference.
-Please use the API-Key send to you via E-Mail.
+#### Mac/Linux
 
-#### Mac/Linux:
 ```bash
 export AZURE_OPENAI_API_KEY=the_api_key_here
-export AZURE_OPENAI_ENDPOINT=https://2025-m3-workshop-ragenten.openai.azure.com/
-export OPENAI_API_VERSION=2025-01-01-preview
+export AZURE_OPENAI_ENDPOINT=https://m3-2026-conference-workshop.cognitiveservices.azure.com
+export OPENAI_API_VERSION=2025-04-01-preview
 ```
 
-#### Windows: 
+#### Windows
 
 ```bash
 setx AZURE_OPENAI_API_KEY "the_api_key_here"
-setx AZURE_OPENAI_ENDPOINT "https://2025-m3-workshop-ragenten.openai.azure.com/"
-setx OPENAI_API_VERSION "2025-01-01-preview"
+setx AZURE_OPENAI_ENDPOINT "https://m3-2026-conference-workshop.cognitiveservices.azure.com/"
+setx OPENAI_API_VERSION "2025-04-01-preview"
 ```
 
-### Python Setup
+### 3. Python environment
 
-We assume the usage of virtual environments for working on this (and other) python projects. We assume you have installed python3 with an up2date version. (On Windows, write `python` instead of `python3`.)
-
-
-#### Create the venv
+Python 3.11+ is recommended. Create and activate a virtual environment:
 
 ```bash
 python3 -m venv .venv
+source .venv/bin/activate            # Linux/Mac
+.venv\Scripts\activate.bat           # Windows
 ```
 
-
-#### Activate the venv
-
-In that shell / terminal session all the installed packages are now available.
-
-#### Linux/Mac: 
-
-```bash
-source .venv/bin/activate
-```
-
-
-#### Windows: 
-
-```bash
-Set-ExecutionPolicy Unrestricted -Scope Process   # Allows script execution for this session
-.venv/Scripts/activate.bat
-```
-
-
-### Install necessary python dependencies
+Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
+### 4. Run the smoke test
 
-### Install Podman
-
-(If you know your way around docker, can troubleshoot it yourself and have it installed, you can skip this step and use docker) 
-
-Podman is a free alternative to Docker Desktop. We us it to run the vector database. 
-
-Follow the instructions here: https://podman.io/docs/installation, until you have run the commands ```podman machine init``` AND ```podman machine start``` (except Linux users, who can stop after downloading the cli)
-
-
-### Building the image
-
-Now we that we have setup podman we can start to build our own container.
-Change your working directory: 
-```bash 
-cd PGVectorContainer
-``` 
-and 
-```bash 
-podman build -t pgvector_m3 .
-``` 
-to build the image
-
-### Run the container and the test script
-
-Start the container, inside is our data we will use for RAG:
 ```bash
-podman run -d -p 5432:5432 --name vector_database_m3 pgvector_m3
+python system_check.py
 ```
-Now everything should be setup! So you can finally run our start script and verify everything works: 
+
+When prompted, type `Tell me about Mars!`. If you get a Mars travel response, you're ready for the workshop.
+
+
+## Workshop structure
+
+Exercises live under `Aufgaben/`, with reference solutions under `Solutions/`.
+
+| Block | Folder | What you'll build |
+|-------|--------|-------------------|
+| Function Calling | `b_Function Calling/` | Declare a tool, dispatch its call, return the result to the LLM |
+| RAG | `c_RAG/` | Vectorize a query, find the closest chunks in `travel.db`, ground the LLM's answer |
+| Agents | `d_Agenten/` | Build a tool-calling agent loop, then grow it step by step |
+
+The agent block is split into four progressive exercises that all build on the same loop:
+
+1. `aufgabe1_loop/` — write the minimal agent loop with one tool
+2. `aufgabe2_more_tools/` — register the hotel tools, watch the agent compose them
+3. `aufgabe3_rag_tool/` — add the RAG retrieval as a tool — agent now answers travel questions and books trips
+4. `aufgabe4_planning/` — add a planning instruction to the system prompt and compare behavior
+
+Run any exercise from the project root, e.g.:
+
 ```bash
-cd ..
+python -m Solutions.d_Agenten.aufgabe1_loop.main
 ```
+
+---
+
+## Rebuilding `travel.db` (only if you want to)
+
+`travel.db` is committed to the repo, so you don't need to do this. If you want to re-seed it (e.g. to add new hotels or destinations), run:
+
 ```bash
-python3 system_check.py
+python -m SetupFunctionsContainer.fillDatabase
 ```
-and answer the Terminals question with "Tell me about Mars!". If you get some information about hotels and cities on Mars, instead of the explanation of the red planet, everything works perfectly and you are ready to go. If not, please reach out!
+
+This re-vectorizes everything in `Space Destinations/` using `text-embedding-3-large` and rebuilds the hotels and availabilities tables.
