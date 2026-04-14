@@ -1,5 +1,6 @@
 .idea/*
-__pycache__/*
+**/__pycache__/*
 travel_agent_env/*
 .env
 .venv
+*.pdf
