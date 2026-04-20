@@ -25,7 +25,7 @@ while True:
     messages.append({"role": "user", "content": userRequest})
     # read user input and devise a plan on how to solve it
     completionRequest = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         tools=tools,
         messages= messages
         )
@@ -40,7 +40,7 @@ while True:
                  arguments["start_date"], arguments["end_date"], cost
                  )})
             completionRequest = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5.4-mini",
                 messages= messages
             )
         elif tool_call.function.name == "answer_space_travel_questions":
@@ -56,7 +56,7 @@ while True:
                      "content": text})
             # generate new completion request
             completionRequest = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5.4-mini",
                 messages=space_message
                 )
 

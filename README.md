@@ -2,7 +2,7 @@
 
 ## Getting started
 
-This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script that will make use of vectorization, a database call to a dockerized db, and a LLM inference. If everything works, you are ready for the workshop!
+This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script that will make use of vectorization, a database call, and a LLM inference. If everything works, you are ready for the workshop!
 
 
 ### Git checkout
@@ -67,38 +67,9 @@ pip install -r requirements.txt
 ```
 
 
-### Install Podman
+### Verify the setup
 
-(If you know your way around docker, can troubleshoot it yourself and have it installed, you can skip this step and use docker) 
-
-Podman is a free alternative to Docker Desktop. We us it to run the vector database. 
-
-Follow the instructions here: https://podman.io/docs/installation, until you have run the commands ```podman machine init``` AND ```podman machine start``` (except Linux users, who can stop after downloading the cli)
-
-
-### Building the image
-
-Now we that we have setup podman we can start to build our own container.
-Change your working directory: 
-```bash 
-cd PGVectorContainer
-``` 
-and 
-```bash 
-podman build -t pgvector_m3 .
-``` 
-to build the image
-
-### Run the container and the test script
-
-Start the container, inside is our data we will use for RAG:
-```bash
-podman run -d -p 5432:5432 --name vector_database_m3 pgvector_m3
-```
-Now everything should be setup! So you can finally run our start script and verify everything works: 
-```bash
-cd ..
-```
+Now everything should be setup! Run the system check script:
 ```bash
 python3 system_check.py
 ```

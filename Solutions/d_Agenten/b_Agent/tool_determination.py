@@ -6,12 +6,13 @@ client = AzureOpenAI()
 
 def determine_tool(next_step, tools):
     completion_tool = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         tools=tools,
         tool_choice='required',
         messages=[
             {"role": "system",
-             "content": """Read the assistant message below and determine which tool to use to satisfy this task"""},
+             "content": """Read the assistant message below and determine which tool to use to satisfy this task.
+             Adhere to the assistant message you receive as close as possible. Use the given input parameters"""},
             {
                 "role": "assistant",
                 "content": next_step

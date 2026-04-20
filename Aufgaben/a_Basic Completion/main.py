@@ -14,7 +14,7 @@ while True:
 
     # this sends the request to the llm - answer you can find in the completionRequest
     completionResponse = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
 
         )
 
