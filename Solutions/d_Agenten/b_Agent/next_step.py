@@ -15,7 +15,8 @@ def next_step(plan, executed_steps, chat_history, tools):
                     This is why you are given tools, but are not allowed to use them. You should reason, with the explanation
                     following which tool to use next. So it is your task, to do this, so the rest can follow after.
                     So do not reason about not being allowed to use tools. This is on purpose. You should help to set up
-                    the next step.
+                    the next step. You can not use tools and this is fine and on purpose. Do not think about that, but 
+                    rather what the next step should be, which tool can help the user!
                     The next message you will receive is a step by step plan of a task we need to execute.
                     Its format contains the order of the steps, an explanation of what needs to be done, a recommended tool,
                     as well as the suggested input. The input can be given directly, or as the output of a previously executed step.
@@ -36,7 +37,7 @@ def next_step(plan, executed_steps, chat_history, tools):
                     ONLY ANSWER WITH JSON, USE THE FORMAT BELOW. DO NOT FORMAT THE MESSAGE, JUST ANSWER WITH JSON.
                     (Read the Text between $$ as explanations of the parameter):
                     {
-                       "chainOfThoughts": $Your chain of thoughts while solving this tasks. Fill it with your reasoning$
+                       "chainOfThoughts": $Your thoughts which tool the next LLM should use. You will not use it and this is fine$
                        "nextStep": $leave this object null if no step is needed$ {
                            "recommendedTool": $Your tool recommendation. To determine this look at your available tools$
                            "Input": $The input needed. Either determined by you, or use the output of a previous step$
