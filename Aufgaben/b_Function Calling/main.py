@@ -24,7 +24,7 @@ while True:
     messages.append({"role": "user", "content": userRequest})
     # fill the tools property in the completion request
     completionRequest = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         messages= messages
     )
 

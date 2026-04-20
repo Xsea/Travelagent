@@ -37,7 +37,7 @@ while True:
     executed_steps = agent_loop(user_request, flatten_history(messages))
 
     summaryRequest = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-5.4-mini",
         messages=[{"role": "system",
                    "content": """As a travel agent, you have received a user_request (see below). Additionally, you tried
                   to fulfill the request step by step (see the executed steps in the system message). Please write an answer

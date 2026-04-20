@@ -8,7 +8,7 @@ def determine_tool(next_step, tools):
     # use the given string to let an llm decide which tools to use
     # return the choices[0].message.tool_calls[0] object
     completion_tool = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.4-mini",
         tools=tools,
         tool_choice='required',
         messages=[

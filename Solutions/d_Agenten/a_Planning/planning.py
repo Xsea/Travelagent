@@ -6,7 +6,7 @@ client = AzureOpenAI()
 #### Planning
 def planning(user_request: str, chat_history: str, tools):
     completion_plan = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-5.4-mini",
         tools=tools,
         tool_choice='none',
         messages=[

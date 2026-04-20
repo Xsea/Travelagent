@@ -13,6 +13,7 @@ from Solutions.d_Agenten.c_Memory.short_term_memory import short_term_memory
 def agent_loop(user_request, chat_history):
     the_plan = planning(user_request, chat_history, tool_belt)
     i = 0
+    print(the_plan)
     executed_steps = "########## EXECUTED STEPS ############"
     while i < 20:
         print("########### STEP {0} ######################".format(i + 1))
@@ -31,7 +32,7 @@ def agent_loop(user_request, chat_history):
 
         # now we determine the next tool and then execute it
         tool = determine_tool(str(next_step_parsed["nextStep"]), tool_belt)
-
+        print("TOOOL!", tool)
         if tool.finish_reason == "tool_calls":
             tool_call = tool.message.tool_calls[0]
             output = tool_execution(tool_call)
