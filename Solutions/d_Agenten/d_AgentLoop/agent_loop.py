@@ -23,14 +23,12 @@ def agent_loop(user_request, chat_history):
         # sometimes the LLM creates a valid json, but starts with the annotation ```json then {} and ends with ```
         next_step_result = next_step_result.removeprefix("```json").removesuffix("```")
         next_step_parsed = json.loads(next_step_result)
-
         # we are done - lets get out
         if next_step_parsed["finish"]:
             break
 
         # now we determine the next tool and then execute it
         tool = determine_tool(str(next_step_parsed["nextStep"]), tool_belt)
-        print("TOOOL!", tool)
         if tool.finish_reason == "tool_calls":
             tool_call = tool.message.tool_calls[0]
             output = tool_execution(tool_call)
