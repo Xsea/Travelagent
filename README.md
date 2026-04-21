@@ -1,76 +1,55 @@
 # Travelagent
 
+A workshop on building a Travel Agent with the Azure OpenAI API: function calling, RAG, and agent loops.
+
 ## Getting started
 
-This getting started guide is there, to set up everything up for the workshop day. At the end, you will run a small script that will make use of vectorization, a database call, and a LLM inference. If everything works, you are ready for the workshop!
+This guide sets everything up for the workshop day. At the end you'll run a small smoke-test script that uses vector search and an LLM call. If it succeeds, you're ready.
 
+### 1. Git checkout
 
-### Git checkout
+Clone this repository and `cd` into the project root (the folder containing this `README.md`).
 
-Please checkout this git repository and change your working directory in your terminal to the root folder of this project (it includes this `README.md`)
+### 2. Set the API key
 
-### Export the provided API-Key
+We use the Azure OpenAI API for LLM inference. Use the API key sent to you via email.
 
-In this workshop we use the Azure OpenAI API for LLM inference.
-Please use the API-Key send to you via E-Mail.
+#### Mac/Linux
 
-#### Mac/Linux:
 ```bash
 export AZURE_OPENAI_API_KEY=the_api_key_here
-export AZURE_OPENAI_ENDPOINT=https://2025-m3-workshop-ragenten.openai.azure.com/
-export OPENAI_API_VERSION=2025-01-01-preview
+export AZURE_OPENAI_ENDPOINT=https://m3-2026-conference-workshop.cognitiveservices.azure.com
+export OPENAI_API_VERSION=2025-04-01-preview
 ```
 
-#### Windows: 
+#### Windows
 
 ```bash
 setx AZURE_OPENAI_API_KEY "the_api_key_here"
-setx AZURE_OPENAI_ENDPOINT "https://2025-m3-workshop-ragenten.openai.azure.com/"
-setx OPENAI_API_VERSION "2025-01-01-preview"
+setx AZURE_OPENAI_ENDPOINT "https://m3-2026-conference-workshop.cognitiveservices.azure.com/"
+setx OPENAI_API_VERSION "2025-04-01-preview"
 ```
 
-### Python Setup
+### 3. Python environment
 
-We assume the usage of virtual environments for working on this (and other) python projects. We assume you have installed python3 with an up2date version. (On Windows, write `python` instead of `python3`.)
-
-
-#### Create the venv
+Python 3.11+ is recommended. Create and activate a virtual environment:
 
 ```bash
 python3 -m venv .venv
+source .venv/bin/activate            # Linux/Mac
+.venv\Scripts\activate.bat           # Windows
 ```
 
-
-#### Activate the venv
-
-In that shell / terminal session all the installed packages are now available.
-
-#### Linux/Mac: 
-
-```bash
-source .venv/bin/activate
-```
-
-
-#### Windows: 
-
-```bash
-Set-ExecutionPolicy Unrestricted -Scope Process   # Allows script execution for this session
-.venv/Scripts/activate.bat
-```
-
-
-### Install necessary python dependencies
+Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
+### 4. Run the smoke test
 
-### Verify the setup
-
-Now everything should be setup! Run the system check script:
 ```bash
-python3 system_check.py
+python system_check.py
 ```
-and answer the Terminals question with "Tell me about Mars!". If you get some information about hotels and cities on Mars, instead of the explanation of the red planet, everything works perfectly and you are ready to go. If not, please reach out!
+
+When prompted, type `Tell me about Mars!`. If you get a Mars travel response, you're ready for the workshop.

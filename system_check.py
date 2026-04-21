@@ -1,3 +1,9 @@
+"""Smoke test: verifies sqlite-vec + Azure OpenAI are wired up correctly.
+
+Run from the project root:
+    python system_check.py
+Then answer "Tell me about Mars!" — you should see a Mars travel response.
+"""
 try:
     import pysqlite3 as sqlite3
 except ImportError:
@@ -46,29 +52,28 @@ def retrieve_closest_texts(packed_vector):
     return texts
 
 
-def answer_space_travel(user_request):
-    packed = vectorize_user_request(user_request)
+def answer_space_travel(message: str):
+    packed = vectorize_user_request(message)
     texts = retrieve_closest_texts(packed)
     return texts[0]
 
-assistantMessage = "Ask me about Mars!"
-messages = [{"role": "system",
-             "content": """You are a space traveling agent, responsible for helping people planning their vacations.
-             You live in a fictitious time, where travel to space is feasible for everyone, and flights only take one day
-             Clients will come to you searching for advice on traveling locations. Please answer, so that they find a nice
-             location to spend their holidays.
-             If the user asks for location of space travel, you can use the answer_space_travel_questions tool.
-             Please answer questions for space travel seriously!
-             """}]
 
-userRequest = str(input(assistantMessage + "\n"))
-text = answer_space_travel(userRequest)
-messages.append({"role": "user", "content": userRequest})
+messages = [
+    {
+        "role": "system",
+        "content": (
+            "You are a space traveling agent, responsible for helping people planning their vacations. "
+            "You live in a fictitious time, where travel to space is feasible for everyone, and flights only take one day. "
+            "Clients will come to you searching for advice on traveling locations. Please answer, so that they find a nice "
+            "location to spend their holidays."
+        ),
+    }
+]
+
+user_request = input("Type: 'Tell me about Mars!'")
+text = answer_space_travel(user_request)
+messages.append({"role": "user", "content": user_request})
 messages.append({"role": "system", "content": text})
-completionRequest = client.chat.completions.create(
-    model="gpt-5.4-mini",
-    messages=messages
-    )
 
-llm_answer = completionRequest.choices[0].message.content
-print(llm_answer)
+completion = client.chat.completions.create(model="gpt-5.4-mini", messages=messages)
+print(completion.choices[0].message.content)
