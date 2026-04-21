@@ -19,7 +19,7 @@ def determine_tool(next_step, tools):
                 }
             ]
         )
-    return completion_tool.choices[0]
+    return completion_tool.choices[0].message.tool_calls[0]
 
 if __name__ == "__main__":
     print(determine_tool("calculate the costs for a hotel with checkin date 27.03.2024, checkout date 10.04.2024 and a nightly cost of 235", tool_belt))
