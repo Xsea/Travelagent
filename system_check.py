@@ -12,7 +12,7 @@ import struct
 from pathlib import Path
 
 import sqlite_vec
-from openai import AzureOpenAI
+from openai import OpenAI
 
 DB_PATH = Path(__file__).resolve().parent / "travel.db"
 
@@ -21,7 +21,7 @@ con.enable_load_extension(True)
 sqlite_vec.load(con)
 con.enable_load_extension(False)
 
-client = AzureOpenAI()
+client = OpenAI()
 
 
 def vectorize_user_request(user_request):
@@ -75,5 +75,5 @@ text = answer_space_travel(user_request)
 messages.append({"role": "user", "content": user_request})
 messages.append({"role": "system", "content": text})
 
-completion = client.chat.completions.create(model="gpt-5.4-mini", messages=messages)
+completion = client.chat.completions.create(model="gpt-5.6-luna", messages=messages)
 print(completion.choices[0].message.content)

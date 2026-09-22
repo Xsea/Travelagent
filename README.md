@@ -18,16 +18,14 @@ We use the Azure OpenAI API for LLM inference. Use the API key sent to you via e
 
 ```bash
 export AZURE_OPENAI_API_KEY=the_api_key_here
-export AZURE_OPENAI_ENDPOINT=https://m3-2026-conference-workshop.cognitiveservices.azure.com
-export OPENAI_API_VERSION=2025-04-01-preview
+export AZURE_OPENAI_ENDPOINT=https://data2day2026-resource.openai.azure.com/openai/v1
 ```
 
 #### Windows
 
 ```bash
 setx AZURE_OPENAI_API_KEY "the_api_key_here"
-setx AZURE_OPENAI_ENDPOINT "https://m3-2026-conference-workshop.cognitiveservices.azure.com/"
-setx OPENAI_API_VERSION "2025-04-01-preview"
+setx AZURE_OPENAI_ENDPOINT "https://data2day2026-resource.openai.azure.com/openai/v1"
 ```
 
 ### 3. Python environment
