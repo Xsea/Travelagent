@@ -8,20 +8,31 @@ try:
     import pysqlite3 as sqlite3
 except ImportError:
     import sqlite3
+import os
 import struct
 from pathlib import Path
 
 import sqlite_vec
+from dotenv import load_dotenv
 from openai import OpenAI
 
 DB_PATH = Path(__file__).resolve().parent / "travel.db"
+
+load_dotenv()
 
 con = sqlite3.connect(DB_PATH)
 con.enable_load_extension(True)
 sqlite_vec.load(con)
 con.enable_load_extension(False)
 
-client = OpenAI()
+api_key = os.getenv("OPENAI_API_KEY")
+base_url = os.getenv("OPENAI_BASE_URL")
+if not api_key or not base_url:
+    raise RuntimeError(
+        "Set OPENAI_API_KEY and OPENAI_BASE_URL in .env before running this script."
+    )
+
+client = OpenAI(api_key=api_key, base_url=base_url)
 
 
 def vectorize_user_request(user_request):
