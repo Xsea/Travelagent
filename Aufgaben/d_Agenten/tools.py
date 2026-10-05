@@ -8,7 +8,7 @@ except ImportError:
     import sqlite3
 
 import sqlite_vec
-from openai import AzureOpenAI
+from llm import embed
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "travel.db"
 
@@ -17,8 +17,6 @@ con.enable_load_extension(True)
 sqlite_vec.load(con)
 con.enable_load_extension(False)
 cur = con.cursor()
-
-client = AzureOpenAI()
 
 def calculate_duration(start_date_string, end_date_string):
     start_date = datetime.strptime(start_date_string, "%Y-%m-%d")
@@ -32,7 +30,7 @@ def calculate_hotel_cost(start_date, end_date, price):
 
 # this method vectorizes user requests with the same vectorizer that was used to store all text files
 def vectorize_user_request(user_request):
-    embedding = client.embeddings.create(input=[user_request], model="text-embedding-3-large").data[0].embedding
+    embedding = embed([user_request])
     return struct.pack(f"{len(embedding)}f", *embedding)
 
 # this method uses sqlite-vec to find the 5 closest matching chunks, and return the corresponding texts

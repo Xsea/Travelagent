@@ -8,10 +8,9 @@ except ImportError:
 
 import sqlite_vec
 import tiktoken
-from openai import AzureOpenAI
+from llm import embed
 
 tokenizer = tiktoken.encoding_for_model("gpt-5.4-mini")
-client = AzureOpenAI()
 
 con = sqlite3.connect("../travel.db")
 con.enable_load_extension(True)
@@ -53,7 +52,7 @@ def chunker(text):
 def vectorize_chunks(chunks):
     vectors = []
     for chunk in chunks:
-        vector = client.embeddings.create(input=[chunk], model="text-embedding-3-large").data[0].embedding
+        vector = embed([chunk])
         vectors.append(vector)
     return vectors
 

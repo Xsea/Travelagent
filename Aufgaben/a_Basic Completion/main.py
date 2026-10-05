@@ -1,6 +1,4 @@
-from openai import AzureOpenAI
-
-client = AzureOpenAI()
+from llm import complete
 
 assistantMessage = "How can I help you?"
 # the chat history - you need to fill it
@@ -13,10 +11,7 @@ while True:
         break
 
     # this sends the request to the llm - answer you can find in the completionRequest
-    completionResponse = client.chat.completions.create(
-        model="gpt-5.4-mini",
-
-        )
+    completionResponse = complete(messages=[])
 
     # things that need to be done: write a system
     # fill the messages array so that the complete chat history is there and give it to the llm

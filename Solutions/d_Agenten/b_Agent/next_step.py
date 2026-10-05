@@ -1,8 +1,6 @@
-from openai import AzureOpenAI
+from llm import complete
 from Aufgaben.d_Agenten.tools_description import tool_belt
 from Aufgaben.d_Agenten.a_Planning.examplePlan import  plan as the_plan
-
-client = AzureOpenAI()
 
 
 def tools_to_text(tools):
@@ -21,8 +19,7 @@ def tools_to_text(tools):
 
 def next_step(plan, executed_steps, chat_history, tools):
     tool_text = tools_to_text(tools)
-    completion_step = client.chat.completions.create(
-            model="gpt-5.4-mini",
+    completion_step = complete(
             messages=[
                 {"role": "system",
                  "content": f"""You are a tool router. Your ONLY job is to output JSON recommending which tool the next LLM should call.

@@ -10,25 +10,16 @@ This guide sets everything up for the workshop day. At the end you'll run a smal
 
 Clone this repository and `cd` into the project root (the folder containing this `README.md`).
 
-### 2. Set the API key
+### 2. Configure the API key
 
-We use the Azure OpenAI API for LLM inference. Use the API key sent to you via email.
+We use the Azure OpenAI API for LLM inference. Create a `.env` file in the repository root and use the API key sent to you via email:
 
-#### Mac/Linux
-
-```bash
-export AZURE_OPENAI_API_KEY=the_api_key_here
-export AZURE_OPENAI_ENDPOINT=https://m3-2026-conference-workshop.cognitiveservices.azure.com
-export OPENAI_API_VERSION=2025-04-01-preview
+```env
+OPENAI_API_KEY=the_api_key_here
+OPENAI_BASE_URL=https://data2day2026-resource.openai.azure.com/openai/v1
 ```
 
-#### Windows
-
-```bash
-setx AZURE_OPENAI_API_KEY "the_api_key_here"
-setx AZURE_OPENAI_ENDPOINT "https://m3-2026-conference-workshop.cognitiveservices.azure.com/"
-setx OPENAI_API_VERSION "2025-04-01-preview"
-```
+The shared `llm.py` module loads this file automatically. Do not commit the `.env` file.
 
 ### 3. Python environment
 

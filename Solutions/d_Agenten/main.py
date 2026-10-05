@@ -1,6 +1,6 @@
 import json
 
-from openai import AzureOpenAI
+from llm import complete
 
 from Solutions.d_Agenten.d_AgentLoop.agent_loop import agent_loop
 from tools import calculate_hotel_cost, give_tourist_information_space, list_hotels, give_hotel_information, \
@@ -10,7 +10,6 @@ from tools_description import calculate_hotel_cost_tool_description, list_hotels
     give_tourist_information_space_description, book_hotel_description, book_flights_description, \
     collect_information_from_the_user_description
 
-client = AzureOpenAI()
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
              "content": """You are a space traveling agent, responsible for helping people planning their vacations. 
@@ -36,8 +35,7 @@ while True:
     # read user input and devise a plan on how to solve it
     executed_steps = agent_loop(user_request, flatten_history(messages))
 
-    summaryRequest = client.chat.completions.create(
-        model="gpt-5.4-mini",
+    summaryRequest = complete(
         messages=[{"role": "system",
                    "content": """As a travel agent, you have received a user_request (see below). Additionally, you tried
                   to fulfill the request step by step (see the executed steps in the system message). Please write an answer

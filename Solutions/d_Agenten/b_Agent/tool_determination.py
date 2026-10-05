@@ -1,12 +1,9 @@
-from openai import AzureOpenAI
+from llm import complete
 from Solutions.d_Agenten.tools_description import tool_belt
 
 
-client = AzureOpenAI()
-
 def determine_tool(next_step, tools):
-    completion_tool = client.chat.completions.create(
-        model="gpt-5.4-mini",
+    completion_tool = complete(
         tools=tools,
         tool_choice='required',
         messages=[

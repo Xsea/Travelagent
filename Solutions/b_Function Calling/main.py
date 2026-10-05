@@ -1,11 +1,10 @@
 import json
 
-from openai import AzureOpenAI
+from llm import complete
 
 from tools import calculate_hotel_cost
 from tools_description import calculate_hotel_cost_tool
 
-client = AzureOpenAI()
 
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
@@ -22,10 +21,9 @@ while True:
 
     messages.append({"role": "user", "content": userRequest})
     # read user input and devise a plan on how to solve it
-    completionRequest = client.chat.completions.create(
-        model="gpt-5.4-mini",
+    completionRequest = complete(
         tools=tools,
-        messages= messages
+        messages=messages,
         )
 
     if completionRequest.choices[0].finish_reason == "tool_calls":
@@ -37,10 +35,7 @@ while True:
              "content": """The cost of the stay with arrival date {} and departure date {} will be {}""".format(
                  arguments["start_date"], arguments["end_date"], cost
                  )})
-            completionRequest = client.chat.completions.create(
-                model="gpt-5.4-mini",
-                messages= messages
-            )
+            completionRequest = complete(messages=messages)
 
     llm_answer = completionRequest.choices[0].message
     messages.append(llm_answer)

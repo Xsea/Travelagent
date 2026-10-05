@@ -8,7 +8,6 @@ except ImportError:
     import sqlite3
 
 import sqlite_vec
-from openai import AzureOpenAI
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "travel.db"
 
@@ -16,8 +15,6 @@ con = sqlite3.connect(DB_PATH)
 con.enable_load_extension(True)
 sqlite_vec.load(con)
 con.enable_load_extension(False)
-
-client = AzureOpenAI()
 
 def calculate_duration(start_date_string, end_date_string):
     start_date = datetime.strptime(start_date_string, "%Y-%m-%d")

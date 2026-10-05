@@ -1,11 +1,10 @@
 import json
 
-from openai import AzureOpenAI
+from llm import complete
 
 from tools import calculate_hotel_cost, give_tourist_information_space
 from tools_description import calculate_hotel_cost_tool, give_tourist_information_space_description
 
-client = AzureOpenAI()
 
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
@@ -24,10 +23,9 @@ while True:
         break
     messages.append({"role": "user", "content": userRequest})
     # read user input and devise a plan on how to solve it
-    completionRequest = client.chat.completions.create(
-        model="gpt-5.4-mini",
+    completionRequest = complete(
         tools=tools,
-        messages= messages
+        messages=messages,
         )
 
     if completionRequest.choices[0].finish_reason == "tool_calls":
@@ -39,10 +37,7 @@ while True:
              "content": """The cost of the stay with arrival date {} and departure date {} will be {}""".format(
                  arguments["start_date"], arguments["end_date"], cost
                  )})
-            completionRequest = client.chat.completions.create(
-                model="gpt-5.4-mini",
-                messages= messages
-            )
+            completionRequest = complete(messages=messages)
         elif tool_call.function.name == "answer_space_travel_questions":
             # get closest texts
             texts = give_tourist_information_space(arguments["user_request"])
@@ -55,10 +50,7 @@ while True:
                     {"role": "system",
                      "content": text})
             # generate new completion request
-            completionRequest = client.chat.completions.create(
-                model="gpt-5.4-mini",
-                messages=space_message
-                )
+            completionRequest = complete(messages=space_message)
 
     llm_answer = completionRequest.choices[0].message
     messages.append(llm_answer)

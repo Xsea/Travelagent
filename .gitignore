@@ -1,6 +1,7 @@
 .idea/*
-__pycache__/*
+**/__pycache__/*
 travel_agent_env/*
 .env
 .venv
 **/travel.db
+.DS_Store

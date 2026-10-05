@@ -1,12 +1,9 @@
 from Aufgaben.d_Agenten.tools_description import tool_belt
-from openai import AzureOpenAI
-
-client = AzureOpenAI()
+from llm import complete
 
 #### Planning
 def planning(user_request: str, chat_history: str, tools):
-    completion_plan = client.chat.completions.create(
-        model="gpt-5.4-mini",
+    completion_plan = complete(
         tools=tools,
         tool_choice='none',
         messages=[

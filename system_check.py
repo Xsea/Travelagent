@@ -12,7 +12,7 @@ import struct
 from pathlib import Path
 
 import sqlite_vec
-from openai import AzureOpenAI
+from llm import complete, embed
 
 DB_PATH = Path(__file__).resolve().parent / "travel.db"
 
@@ -21,13 +21,8 @@ con.enable_load_extension(True)
 sqlite_vec.load(con)
 con.enable_load_extension(False)
 
-client = AzureOpenAI()
-
-
 def vectorize_user_request(user_request):
-    embedding = client.embeddings.create(
-        input=[user_request], model="text-embedding-3-large"
-    ).data[0].embedding
+    embedding = embed([user_request])
     return struct.pack(f"{len(embedding)}f", *embedding)
 
 
@@ -75,5 +70,5 @@ text = answer_space_travel(user_request)
 messages.append({"role": "user", "content": user_request})
 messages.append({"role": "system", "content": text})
 
-completion = client.chat.completions.create(model="gpt-5.4-mini", messages=messages)
+completion = complete(messages=messages)
 print(completion.choices[0].message.content)

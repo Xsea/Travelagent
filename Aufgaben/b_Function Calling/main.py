@@ -3,9 +3,7 @@ import json
 from tools import calculate_hotel_cost
 from tools_description import calculate_hotel_cost_tool
 
-from openai import AzureOpenAI
-
-client = AzureOpenAI()
+from llm import complete
 
 assistantMessage = "How can I help you?"
 messages = [{"role": "system",
@@ -23,10 +21,7 @@ while True:
 
     messages.append({"role": "user", "content": userRequest})
     # fill the tools property in the completion request
-    completionRequest = client.chat.completions.create(
-        model="gpt-5.4-mini",
-        messages= messages
-    )
+    completionRequest = complete(messages=messages)
 
     # check the finish reason of completionRequest.choices[0] -> if tool_calls start separate handling
     # in completionRequest.choices[0].message.tool_calls[0] you will find the name of the called tool
